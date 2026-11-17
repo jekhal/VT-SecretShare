@@ -2,3 +2,18 @@
 /.env
 *.log
 /VT-SecretShare
+
+# Build outputs and local artifacts
+/dist/
+/bin/
+*.exe
+*.test
+*.out
+coverage.*
+.env.*
+!.env.example
+*.pem
+*.key
+.DS_Store
+.idea/
+.vscode/
