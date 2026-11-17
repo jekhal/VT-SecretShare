@@ -1,12 +1,12 @@
 # Build (works the same under `docker build` and `podman build`).
-FROM golang:1.27.3-alpine AS build
+FROM golang:1.27.4-alpine AS build
 WORKDIR /src
 COPY go.mod go.sum* ./
 RUN go mod download
 COPY . .
 RUN CGO_ENABLED=0 go build -ldflags="-s -w" -o /out/vt-secretshare .
 
-FROM gcr.io/distroless/static-debian12
+FROM gcr.io/distroless/static-debian13
 COPY --from=build /out/vt-secretshare /vt-secretshare
 EXPOSE 8080
 # Inside the container's own network namespace the app must listen on every

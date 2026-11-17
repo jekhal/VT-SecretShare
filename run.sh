@@ -9,7 +9,7 @@ CONTAINER=vt-redis-dev
 if ! docker ps --format '{{.Names}}' | grep -q "^${CONTAINER}$"; then
   echo "[run] starting disposable Redis ($CONTAINER)..."
   docker rm -f "$CONTAINER" >/dev/null 2>&1 || true
-  docker run -d --name "$CONTAINER" -p 127.0.0.1:6379:6379 redis:7-alpine --save "" --appendonly no >/dev/null
+  docker run -d --name "$CONTAINER" -p 127.0.0.1:6379:6379 redis:8-alpine --save "" --appendonly no >/dev/null
 fi
 
 [ -f .env ] && { set -a; . ./.env; set +a; }

@@ -1,7 +1,7 @@
 # Local stack: app + Redis. `podman compose` works the same.
 services:
   redis:
-    image: redis:7-alpine
+    image: redis:8-alpine
     command: ["redis-server", "--save", "", "--appendonly", "no"]  # secrets are ephemeral; don't persist to disk
     restart: unless-stopped
 
