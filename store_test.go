@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/redis/go-redis/v9"
 	"io"
 	"os"
@@ -111,7 +110,7 @@ func TestExpirationAndMetadata(t *testing.T) {
 		time.Sleep(20 * time.Millisecond)
 	}
 	if _, err := s.Burn(ctx, "expires", ""); !errors.Is(err, ErrNotFound) {
-		t.Fatal(fmt.Sprintf("expired burn: %v", err))
+		t.Fatalf("expired burn: %v", err)
 	}
 }
 func TestMetadataDoesNotBurn(t *testing.T) {
