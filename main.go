@@ -136,7 +136,27 @@ func describeLimit(n int, window time.Duration) string {
 	return fmt.Sprintf("%d/%s", n, window)
 }
 
+// healthcheck probes this instance's /healthz on loopback and returns the exit
+// code for a container HEALTHCHECK: the distroless image has no shell or curl.
+func healthcheck(port string) int {
+	c := &http.Client{Timeout: 4 * time.Second}
+	resp, err := c.Get("http://" + net.JoinHostPort("127.0.0.1", port) + "/healthz")
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		return 1
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		fmt.Fprintln(os.Stderr, "healthz:", resp.Status)
+		return 1
+	}
+	return 0
+}
+
 func main() {
+	if len(os.Args) > 1 && os.Args[1] == "healthcheck" {
+		os.Exit(healthcheck(env("PORT", "8080")))
+	}
 	cfg := loadConfig()
 	store := NewStore(cfg.redisAddr, cfg.redisPassword)
 

@@ -14,4 +14,6 @@ EXPOSE 8080
 # is published (docker-compose.yml binds it to 127.0.0.1 on the host).
 ENV BIND_ADDR=0.0.0.0
 USER nonroot:nonroot
+# No shell in distroless: the binary probes its own /healthz.
+HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 CMD ["/vt-secretshare", "healthcheck"]
 ENTRYPOINT ["/vt-secretshare"]
