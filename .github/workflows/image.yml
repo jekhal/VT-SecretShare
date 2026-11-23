@@ -1,10 +1,11 @@
 name: image
 # Builds the container image and publishes it to GHCR, tagged with the commit
 # SHA (immutable; what servers pin) and, on main, also `main`.
-# Run it by hand on any branch with "Run workflow".
+# Every branch builds (only main gets the `main` tag), so a branch can be
+# deployed by its SHA before it is merged.
 on:
   push:
-    branches: [main]
+    branches: ["**"]
     tags: ["v*"]
   workflow_dispatch:
 permissions:
